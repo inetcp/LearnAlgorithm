@@ -21,9 +21,7 @@
 
     <ItemGroup>
       <Folder Include="Algorithms" />
-      <Folder Include="DataStructures\LinearList" />
       <Folder Include="UnitTest\AlgorithmsTests" />
-      <Folder Include="UnitTest\DataStructuresTests" />
     </ItemGroup>
 
 </Project>
