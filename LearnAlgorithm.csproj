@@ -19,9 +19,4 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Algorithms" />
-      <Folder Include="UnitTest\AlgorithmsTests" />
-    </ItemGroup>
-
 </Project>
