@@ -6,42 +6,62 @@ namespace LearnAlgorithm.UnitTest.AlgorithmsTests
     public class SortingTests
     {
         [Fact]
-        public void BubbleSorting_Test()
+        public void BubbleSort_Test()
         {
             int[] testData = new[] { 1, 7, 3, 4, 11, 6 };
             int[] expectedData = new[] { 1, 3, 4, 6, 7, 11 };
             
-            Sorting.BubbleSorting(testData);
+            Sorting.BubbleSort(testData);
             Assert.Equal(testData, expectedData);
         }
         
         [Fact]
-        public void SelectionSorting_Test()
+        public void SelectionSort_Test()
         {
             int[] testData = new[] { 1, 7, 3, 4, 11, 6 };
             int[] expectedData = new[] { 1, 3, 4, 6, 7, 11 };
             
-            Sorting.SelectionSorting(testData);
+            Sorting.SelectionSort(testData);
             Assert.Equal(testData, expectedData);
         }
         
         [Fact]
-        public void InsertionSorting_Test()
+        public void InsertionSort_Test()
         {
             int[] testData = new[] { 1, 7, 3, 4, 11, 6 };
             int[] expectedData = new[] { 1, 3, 4, 6, 7, 11 };
             
-            Sorting.InsertionSorting(testData);
+            Sorting.InsertionSort(testData);
             Assert.Equal(testData, expectedData);
         }
         
         [Fact]
-        public void ShellSorting_Test()
+        public void ShellSort_Test()
         {
             int[] testData = new[] { 1, 7, 3, 4, 11, 6 };
             int[] expectedData = new[] { 1, 3, 4, 6, 7, 11 };
             
-            Sorting.ShellSorting(testData);
+            Sorting.ShellSort(testData);
+            Assert.Equal(testData, expectedData);
+        }
+        
+        [Fact]
+        public void MergeSortRecursion_Test()
+        {
+            int[] testData = new[] { 1, 7, 3, 4, 11, 6, 2 };
+            int[] expectedData = new[] { 1, 2, 3, 4, 6, 7, 11 };
+            
+            Sorting.MergeSortRecursion(testData);
+            Assert.Equal(testData, expectedData);
+        }
+        
+        [Fact]
+        public void MergeSortNonRecursion_Test()
+        {
+            int[] testData = new[] { 1, 7, 3, 4, 11, 6, 2 };
+            int[] expectedData = new[] { 1, 2, 3, 4, 6, 7, 11 };
+            
+            Sorting.MergeSortNonRecursion(testData);
             Assert.Equal(testData, expectedData);
         }
     }

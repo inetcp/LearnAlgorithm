@@ -9,7 +9,7 @@
         /// 冒泡排序
         /// </summary>
         /// <param name="nums"></param>
-        public static void BubbleSorting(int[] nums)
+        public static void BubbleSort(int[] nums)
         {
             // 空数组直接退出
             if (nums == null || nums.Length == 0)
@@ -55,7 +55,7 @@
         /// 选择排序
         /// </summary>
         /// <param name="nums"></param>
-        public static void SelectionSorting(int[] nums)
+        public static void SelectionSort(int[] nums)
         {
             // 空数组直接退出
             if (nums == null || nums.Length == 0)
@@ -94,7 +94,7 @@
         /// 插入排序
         /// </summary>
         /// <param name="nums"></param>
-        public static void InsertionSorting(int[] nums)
+        public static void InsertionSort(int[] nums)
         {
             // 空数组直接退出
             if (nums == null || nums.Length == 0)
@@ -132,7 +132,7 @@
         /// 希尔排序
         /// </summary>
         /// <param name="nums"></param>
-        public static void ShellSorting(int[] nums)
+        public static void ShellSort(int[] nums)
         {
             // 空数组直接退出
             if (nums == null || nums.Length == 0)
@@ -160,6 +160,125 @@
 
                     nums[j + step] = current;
                 }
+            }
+        }
+        
+        /// <summary>
+        /// 归并排序（非递归版）
+        /// </summary>
+        /// <param name="nums"></param>
+        public static void MergeSortNonRecursion(int[] nums)
+        {
+            // 空数组直接退出
+            if (nums == null || nums.Length == 0)
+            {
+                return;
+            }
+            
+            // 数组长度
+            int length = nums.Length;
+            // 相同大小的辅助数组
+            int[] tmpArr = new int[length];
+            
+            // 从增量为1开始，一次归并，增量变为原来的两倍
+            for (int step = 1; step < length; step *= 2)
+            {
+                // 遍历切分出来的多个子序列
+                for (int i = 0; i <= length - step - 1; i += step * 2)
+                {
+                    int left = i;
+                    int mid = i + step - 1;
+                    int right = i + step * 2 - 1;
+
+                    // 最后一个序列的right值超过数组的总大小，以数组最后一个元素为准
+                    if (right > length - 1)
+                    {
+                        right = length - 1;
+                    }
+
+                    Merge(nums, left, mid, right, tmpArr);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 归并排序（递归版）
+        /// </summary>
+        /// <param name="nums"></param>
+        public static void MergeSortRecursion(int[] nums)
+        {
+            // 空数组直接退出
+            if (nums == null || nums.Length == 0)
+            {
+                return;
+            }
+
+            // 相同大小的辅助数组
+            int[] tmpArr = new int[nums.Length];
+            MergeSortRecursion(nums, 0, nums.Length - 1, tmpArr);
+        }
+
+        private static void MergeSortRecursion(int[] nums, int left, int right, int[] tmpArr)
+        {
+            // 当前区间只剩一个元素，或者没有元素则直接返回
+            if (left >= right)
+            {
+                return;
+            }
+
+            // 计算中点
+            int mid = left + (right - left) / 2;
+            
+            // 左边归并排序，使左子序列有序
+            MergeSortRecursion(nums, left, mid, tmpArr);
+            // 右边归并排序，使右子序列有序
+            MergeSortRecursion(nums, mid + 1, right, tmpArr);
+            
+            // 合并左右两个序列
+            Merge(nums, left, mid, right, tmpArr);
+        }
+
+        private static void Merge(int[] nums, int left, int mid, int right, int[] tmpArr)
+        {
+            // 左序列指针
+            int lPoint = left;
+            // 右序列指针
+            int rPoint = mid + 1;
+            // 辅助数组指针
+            int k = 0;
+
+            // 左右序列的两个指针在当前范围内
+            while (lPoint <= mid && rPoint <= right)
+            {
+                // 左序列的值小于右序列的值，则把左序列的值写入辅助数组，同时左序列指针右移
+                // 否则就把右序列的值写入辅助数组，同时右序列右移
+                if (nums[lPoint] <= nums[rPoint])
+                {
+                    tmpArr[k++] = nums[lPoint++];
+                }
+                else
+                {
+                    tmpArr[k++] = nums[rPoint++];
+                }
+            }
+            
+            // 右序列已写完，则把左序列剩下的元素写入辅助数组
+            while(lPoint <= mid)
+            {
+                tmpArr[k++] = nums[lPoint++];
+            }
+
+            // 左序列已写完，则把右序列剩下的元素写入辅助数组
+            while (rPoint <= right)
+            {
+                tmpArr[k++] = nums[rPoint++];
+            }
+
+            // 将辅助数组的元素拷贝回原数组
+            k = 0;
+            while (left <= right)
+            {
+                nums[left++] = tmpArr[k++];
             }
         }
     }
