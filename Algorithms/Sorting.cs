@@ -204,7 +204,7 @@
         /// <summary>
         /// 归并排序（递归版）
         /// </summary>
-        /// <param name="nums"></param>
+        /// <param name="nums"></param>  
         public static void MergeSortRecursion(int[] nums)
         {
             // 空数组直接退出
@@ -280,6 +280,81 @@
             {
                 nums[left++] = tmpArr[k++];
             }
+        }
+
+        /// <summary>
+        /// 快速排序
+        /// </summary>
+        /// <param name="nums"></param>
+        public static void QuickSort(int[] nums)
+        {
+            // 空数组直接退出
+            if (nums == null || nums.Length == 0)
+            {
+                return;
+            }
+
+            // 数值的长度
+            int length = nums.Length;
+            QuickSort(nums, 0, length - 1);
+        }
+
+        private static void QuickSort(int[] nums, int left, int right)
+        {
+            // 当左右两个指针重叠的时候，直接返回
+            if (left >= right)
+            {
+                return;
+            }
+
+            // 找出基准
+            int partitionIndex = Partition(nums, left, right);
+            // 对基准左边的序列进行排序
+            QuickSort(nums, left, partitionIndex - 1);
+            // 对基准右边的序列进行排序
+            QuickSort(nums, partitionIndex + 1, right);
+        }
+
+        private static int Partition(int[] nums, int left, int right)
+        {
+            // 第一条数据作为基准数据
+            int pivot = nums[left];
+            // 左指针
+            int lPoint = left;
+            // 右指针
+            int rPoint = right;
+
+            // 找出序列中的第一个数作为基准
+            // 将数据分为两个区域，比基准小的放在左边区域，比基准大的放在右边区域
+            while (lPoint != rPoint)
+            {
+                // 右指针向前移动，只到找到小于基准的数值停下来
+                while (nums[rPoint] >= pivot && lPoint < rPoint)
+                {
+                    rPoint--;
+                }
+
+                // 左指针向后移动，只到找到大于基准的数值停下来
+                while (nums[lPoint] <= pivot && lPoint < rPoint)
+                {
+                    lPoint++;
+                }
+
+                // 如果左右指针没有重叠，则置换两个指针对应的值
+                if (lPoint < rPoint)
+                {
+                    int tmp = nums[lPoint];
+                    nums[lPoint] = nums[rPoint]; 
+                    nums[rPoint] = tmp;
+                }
+            }
+
+            // 左右指针重叠后，重叠的位置就是基准数据的位置
+            // 将基准数据和重叠点的数据进行置换
+            nums[left] = nums[lPoint];
+            nums[lPoint] = pivot;
+
+            return lPoint;
         }
     }
 }

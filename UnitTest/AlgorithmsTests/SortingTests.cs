@@ -1,10 +1,18 @@
 ﻿using LearnAlgorithm.Algorithms;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace LearnAlgorithm.UnitTest.AlgorithmsTests
 {
     public class SortingTests
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+        
+        public SortingTests(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
+        
         [Fact]
         public void BubbleSort_Test()
         {
@@ -62,6 +70,16 @@ namespace LearnAlgorithm.UnitTest.AlgorithmsTests
             int[] expectedData = new[] { 1, 2, 3, 4, 6, 7, 11 };
             
             Sorting.MergeSortNonRecursion(testData);
+            Assert.Equal(testData, expectedData);
+        }
+        
+        [Fact]
+        public void QuickSort_Test()
+        {
+            int[] testData = new[] { 1, 7, 3, 4, 11, 6, 2 };
+            int[] expectedData = new[] { 1, 2, 3, 4, 6, 7, 11 };
+            
+            Sorting.QuickSort(testData);  
             Assert.Equal(testData, expectedData);
         }
     }
