@@ -82,5 +82,15 @@ namespace LearnAlgorithm.UnitTest.AlgorithmsTests
             Sorting.QuickSort(testData);  
             Assert.Equal(testData, expectedData);
         }
+        
+        [Fact]
+        public void HeapSort_Test()
+        {
+            int[] testData = new[] { 1, 7, 3, 4, 11, 6, 2 };
+            int[] expectedData = new[] { 1, 2, 3, 4, 6, 7, 11 };
+            
+            Sorting.HeapSort(testData);  
+            Assert.Equal(testData, expectedData);
+        }
     }
 }

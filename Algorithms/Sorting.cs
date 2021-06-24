@@ -356,5 +356,74 @@
 
             return lPoint;
         }
+
+        public static void HeapSort(int[] nums)
+        {
+            // 空数组直接退出
+            if (nums == null || nums.Length == 0)
+            {
+                return;
+            }
+            
+            // 数组的长度
+            int length = nums.Length;
+
+            // 第一个非叶子结点：length / 2 - 1
+            // 构建大顶堆的方式为从第一个非叶子结点从下至上，从右至左调整
+            for (int i = length / 2 - 1; i >= 0; i--)
+            {
+                HeapAdjust(nums, i, length);
+            }
+            
+            // 调整大顶堆结果，将堆顶元素与末尾元素进行交换
+            // 这样最大值就排列到尾部，然后对剩下部分重新进行堆调整
+            for (int i = length - 1; i > 0; i--)
+            {
+                // 将最大值置换到尾部
+                int tmp = nums[0];
+                nums[0] = nums[i];
+                nums[i] = tmp;
+                
+                // 对剩下部分重新进行堆调整
+                HeapAdjust(nums, 0, i);
+            }
+            
+        }
+
+        /// <summary>
+        /// 调整大顶堆
+        /// 大顶堆：arr[i] >= arr[2i+1] && arr[i] >= arr[2i+2]
+        /// 小顶堆：arr[i] <= arr[2i+1] && arr[i] <= arr[2i+2]  
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <param name="currentNodeIndex"></param>
+        /// <param name="length"></param>
+        private static void HeapAdjust(int[] nums, int currentNodeIndex, int length)
+        {
+            int currentNode = nums[currentNodeIndex];
+
+            // 从当前结点的左子结点开始
+            for (int i = currentNodeIndex * 2 + 1; i < length; i = i * 2 + 1)
+            {
+                // 如果存在右结点，并且左子结点的数据小于右子节点的数据，将指针指向右结点
+                if (i + 1 < length && nums[i] < nums[i + 1])
+                {
+                    i++;
+                }
+
+                // 如果子节点的数据大于当前结点的数据，将子节点的数据置换给当前结点
+                if (nums[i] > currentNode)
+                {
+                    nums[currentNodeIndex] = nums[i];
+                    currentNodeIndex = i;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            nums[currentNodeIndex] = currentNode;
+        }
     }
 }
