@@ -357,6 +357,10 @@
             return lPoint;
         }
 
+        /// <summary>
+        /// 堆排序
+        /// </summary>
+        /// <param name="nums"></param>
         public static void HeapSort(int[] nums)
         {
             // 空数组直接退出
@@ -368,6 +372,7 @@
             // 数组的长度
             int length = nums.Length;
 
+            // 构建大顶堆
             // 第一个非叶子结点：length / 2 - 1
             // 构建大顶堆的方式为从第一个非叶子结点从下至上，从右至左调整
             for (int i = length / 2 - 1; i >= 0; i--)
@@ -424,6 +429,70 @@
             }
 
             nums[currentNodeIndex] = currentNode;
+        }
+
+        /// <summary>
+        /// 计数排序
+        /// </summary>
+        /// <param name="nums"></param>
+        public static void CountingSort(int[] nums)
+        {
+            // 空数组直接退出
+            if (nums == null || nums.Length == 0)
+            {
+                return;
+            }
+            
+            // 数组的长度
+            int length = nums.Length;
+
+            // 数组最小值，默认数组第一个元素
+            int minValue = nums[0];
+            // 数组最大值，默认数组第一个元素
+            int maxValue = nums[0];
+
+            for (int i = 0; i < length; i++)
+            {
+                // 找出数组中的最小值
+                if (nums[i] < minValue)
+                {
+                    minValue = nums[i];
+                }
+
+                // 找出数组中的最大值
+                if (nums[i] > maxValue)
+                {
+                    maxValue = nums[i];
+                }
+            }
+
+            // 构建计数桶的大小，为数组最大值与最小值之差+1
+            int[] bucket = new int[maxValue - minValue + 1];
+
+            // 对数组中的每个数字进行计数，相同的数字会统计到一起
+            for (int i = 0; i < length; i++)
+            {
+                // 数组中的数字与桶中的下标不是直接对应的
+                // 而是用数组中的数字与最小值的偏移量找到对应桶的下标
+                bucket[nums[i] - minValue]++;
+            }
+
+            // 原数组下标
+            int k = 0;
+            
+            // 将桶中排好序的数据回写回原数组
+            // 外层循环遍历桶的每一条数据
+            for (int i = 0; i < bucket.Length; i++)
+            {
+                // 内层循环遍历计数数量
+                for (int j = 0; j < bucket[i]; j++)
+                {
+                    // 原数组的索引是桶当前索引+计数索引
+                    // 对应的数据则是最小数据+桶当前索引（偏移量）
+                    nums[k] = minValue + i;
+                    k++;
+                }
+            }
         }
     }
 }
