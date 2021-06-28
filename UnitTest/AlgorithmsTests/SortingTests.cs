@@ -93,6 +93,7 @@ namespace LearnAlgorithm.UnitTest.AlgorithmsTests
             SortExecutionTimeTest(sw, randomData, Sorting.QuickSort, "快速排序");
             SortExecutionTimeTest(sw, randomData, Sorting.HeapSort, "堆排序");
             SortExecutionTimeTest(sw, randomData, Sorting.CountingSort, "计数排序");
+            SortExecutionTimeTest(sw, randomData, Sorting.BucketSort, "桶排序");
         }
         
 
@@ -148,6 +149,12 @@ namespace LearnAlgorithm.UnitTest.AlgorithmsTests
         public void CountingSort_Test()
         {
             Sort_Test(Sorting.CountingSort);
+        }
+        
+        [Fact]
+        public void BucketSort_Test()
+        {
+            Sort_Test(Sorting.BucketSort);
         }
     }
 }

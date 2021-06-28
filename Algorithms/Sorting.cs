@@ -1,4 +1,7 @@
-﻿namespace LearnAlgorithm.Algorithms
+﻿using System;
+using System.Collections.Generic;
+
+namespace LearnAlgorithm.Algorithms
 {
     /// <summary>
     /// 排序
@@ -489,8 +492,83 @@
                 {
                     // 原数组的索引是桶当前索引+计数索引
                     // 对应的数据则是最小数据+桶当前索引（偏移量）
-                    nums[k] = minValue + i;
-                    k++;
+                    nums[k++] = minValue + i;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 桶排序
+        /// </summary>
+        /// <param name="nums"></param>
+        public static void BucketSort(int[] nums)
+        {
+            BucketSort(nums, 5);
+        }
+
+        /// <summary>
+        /// 桶排序
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <param name="bucketSize"></param>
+        public static void BucketSort(int[] nums, int bucketSize)
+        {
+            // 空数组直接退出
+            if (nums == null || nums.Length == 0)
+            {
+                return;
+            }
+            
+            // 数组的长度
+            int length = nums.Length;
+            
+            // 数组最小值，默认数组第一个元素
+            int minValue = nums[0];
+            // 数组最大值，默认数组第一个元素
+            int maxValue = nums[0];
+
+            for (int i = 0; i < length; i++)
+            {
+                // 找出数组中的最小值
+                if (nums[i] < minValue)
+                {
+                    minValue = nums[i];
+                }
+
+                // 找出数组中的最大值
+                if (nums[i] > maxValue)
+                {
+                    maxValue = nums[i];
+                }
+            }
+
+            // 通过数组中的最大值和最小值的插值，计算桶的数量
+            int bucketCount = (maxValue - minValue) / bucketSize + 1;
+            List<List<int>> buckets = new List<List<int>>(new List<int>[bucketCount]);
+            
+            for (int i = 0; i < length; i++)
+            {
+                // 当前值和最小值以及桶数量，计算对应的桶编号
+                int bucketIndex = (nums[i] - minValue) / bucketSize;
+                // 将元素放入相应的桶里面
+                buckets[bucketIndex] ??= new List<int>();
+                buckets[bucketIndex].Add(nums[i]);
+            }
+
+            // 原数组下标
+            int k = 0;
+            // 外层循环遍历每个桶
+            for (int i = 0; i < bucketCount; i++)
+            {
+                List<int> bucket = buckets[i];
+                
+                // 对每个桶进行排序
+                bucket.Sort();
+                
+                // 将每个桶的每个元素依此回写回原数组
+                for (int j = 0; j < bucket.Count; j++)
+                {
+                    nums[k++] = bucket[j];
                 }
             }
         }
