@@ -28,42 +28,42 @@ namespace LearnAlgorithm.UnitTest.AlgorithmsTests
             int[] testData = null;
             int[] expectedData = null;
             sortHandler(testData);
-            Assert.Equal(testData, expectedData);
+            Assert.Equal(expectedData, testData);
 
             testData = new int[0];
             expectedData = new int[0];
             sortHandler(testData);
-            Assert.Equal(testData, expectedData);
+            Assert.Equal(expectedData, testData);
             
             testData = new int[] { 1 };
             expectedData = new int[] { 1 };
             sortHandler(testData);
-            Assert.Equal(testData, expectedData);
+            Assert.Equal(expectedData, testData);
             
             testData = new int[] { 2, 1 };
             expectedData = new int[] { 1, 2 };
             sortHandler(testData);
-            Assert.Equal(testData, expectedData);
+            Assert.Equal(expectedData, testData);
             
             testData = new int[] { 2, 1, 3 };
             expectedData = new int[] { 1, 2, 3 };
             sortHandler(testData);
-            Assert.Equal(testData, expectedData);
+            Assert.Equal(expectedData, testData);
             
             testData = new int[] { 4, 1, 3, 2 };
             expectedData = new int[] { 1, 2, 3, 4 };
             sortHandler(testData);
-            Assert.Equal(testData, expectedData);
+            Assert.Equal(expectedData, testData);
             
             testData = new int[] { 8, 1, 4, 1, 3, 2 };
             expectedData = new int[] { 1, 1, 2, 3, 4, 8 };
             sortHandler(testData);
-            Assert.Equal(testData, expectedData);
+            Assert.Equal(expectedData, testData);
 
             testData = GetRandomData(10000);
             expectedData = testData.OrderBy(p => p).ToArray();
             sortHandler(testData);
-            Assert.Equal(testData, expectedData);
+            Assert.Equal(expectedData, testData);
         }
 
         private void SortExecutionTimeTest(Stopwatch sw, int[] randomData, SortHandler sortHandler, string sortHandlerName)
@@ -78,10 +78,10 @@ namespace LearnAlgorithm.UnitTest.AlgorithmsTests
         [Fact]
         public void SortExecutionTime_Test()
         {
-            int maxValue = 50;
-            int[] randomData = GetRandomData(maxValue);
+            int maxCount = 50;
+            int[] randomData = GetRandomData(maxCount);
 
-            _testOutputHelper.WriteLine("样本数据，大小为：" + maxValue);
+            _testOutputHelper.WriteLine("样本数据，大小为：" + maxCount);
 
             var sw = new Stopwatch();
             SortExecutionTimeTest(sw, randomData, Sorting.BubbleSort, "冒泡排序");
