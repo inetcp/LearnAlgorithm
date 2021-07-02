@@ -10,81 +10,135 @@ namespace LearnAlgorithm.DataStructures.LinearList
     {
         private readonly int _maxSize = 20;
         private T[] _datas;
-        private int _length;
 
         public SequenceList()
         {
             _datas = new T[_maxSize];
         }
 
-        public SequenceList(int maxSize) : this()
+        public SequenceList(int maxSize)
         {
             _maxSize = maxSize;
+            _datas = new T[_maxSize];
         }
 
-        public int Length => _length;
+        /// <summary>
+        /// 当前数量
+        /// </summary>
+        public int Length { get; private set; }
 
-        public T GetElement(int index)
+        public T this[int index]
         {
-            if (_length == 0 || index < 0 || index > _length - 1)
-                throw new Exception("线性表为空或无效的序号");
+            get
+            {
+                if (index < 0 || index > Length - 1)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
 
-            return _datas[index];
+                return _datas[index];
+            }
+            
+            set
+            {
+                if (index < 0 || index > Length - 1)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
+                _datas[index] = value;
+            }
         }
-
+        
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="item"></param>
         public void Add(T item)
         {
-            if (_length == _maxSize)
-                throw new Exception("线性表已满");
+            // 当前空间已满，直接退出
+            if (Length == _maxSize)
+            {
+                return;
+            }
 
-            _datas[_length] = item;
-            _length++;
+            _datas[Length] = item;
+            Length++;
         }
 
+        /// <summary>
+        /// 指定位置插入
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="item"></param>
         public void Insert(int index, T item)
         {
-            int k;
-            if (_length == _maxSize)
-                throw new Exception("线性表已满");
+            // 当前空间已满，直接退出
+            if (Length == _maxSize)
+            {
+                return;
+            }
 
-            if (index < 0 || index > _length)
-                throw new Exception("index 不在范围之内");
+            // 索引溢出
+            if (index < 0 || index > Length)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
 
             // 若插入数据位置不在表尾
-            if (index <= _length - 1)
+            if (index <= Length - 1)
             {
                 // 将要插入位置后数据元素向后移动一位
-                for (k = _length - 2; k >= index; k--)
-                    _datas[k + 1] = _datas[k];
+                for (int i = Length - 2; i >= index; i--)
+                {
+                    _datas[i + 1] = _datas[i];
+                }
             }
             
             // 将新元素插入
             _datas[index] = item;
-            _length++;
+            Length++;
         }
 
+        /// <summary>
+        /// 指定位置删除
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public T RemoveAt(int index)
         {
-            int k;
-            if (_length == 0)
-                throw new Exception("线性表为空");
+            if (Length == 0)
+            {
+                return default(T);
+            }
 
-            if (index < 0 || index > _length - 1)
-                throw new Exception("index 不在范围之内");
-
+            // 索引溢出
+            if (index < 0 || index > Length - 1)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            
             T result = _datas[index];
 
             // 如果删除的不是最后的位置
-            if (index < _length - 1)
+            if (index < Length - 1)
             {
                 // 将删除位置后继元素前移
-                for (k = index + 1; k < _length; k++)
-                    _datas[k - 1] = _datas[k];
+                for (int i = index + 1; i < Length; i++)
+                {
+                    _datas[i - 1] = _datas[i];
+                    _datas[i] = default(T);
+                }
             }
 
-            _length--;
+            Length--;
             return result;
         }
-        
+
+        public void Clear()
+        {
+            _datas = new T[_maxSize];
+            Length = 0;
+        }
     }
 }

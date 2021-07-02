@@ -3,45 +3,6 @@
 namespace LearnAlgorithm.DataStructures.LinearList
 {
     /// <summary>
-    /// 单链表结点
-    /// </summary>
-    /// <typeparam name="T">结点类型</typeparam>
-    public class LinkListNode<T>
-    {
-        /// <summary>
-        /// 数据域
-        /// </summary>
-        public T Data { get; set; }
-        
-        /// <summary>
-        /// 指针域
-        /// </summary>
-        public LinkListNode<T> Next { get; set; }
-
-        public LinkListNode(T data, LinkListNode<T> next)
-        {
-            Data = data;
-            Next = next;
-        }
-
-        public LinkListNode(T data)
-        {
-            Data = data;
-        }
-
-        public LinkListNode(LinkListNode<T> next)
-        {
-            Next = next;
-        }
-
-        public LinkListNode()
-        {
-            Data = default(T);
-            Next = null;
-        }
-    }
-
-    /// <summary>
     /// 单链表
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -74,30 +35,41 @@ namespace LearnAlgorithm.DataStructures.LinearList
             }
         }
 
-        /// <summary>
-        /// 追加一个元素
-        /// </summary>
-        /// <param name="data"></param>
-        public void Append(T data)
+        public T this[int index]
         {
-            var newNode = new LinkListNode<T>(data);
-            if (Head == null)
+            get
             {
-                Head = newNode;
-                return;
+                // 判断index是否在当前范围内
+                if (index < 0 || index > Length - 1)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                
+                var currentNode = this.Get(index);
+                return currentNode.Data;
             }
 
-            this.Last.Next = newNode;
+            set
+            {
+                // 判断index是否在当前范围内
+                if (index < 0 || index > Length - 1)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
+                var currentNode = this.Get(index);
+                currentNode.Data = value;
+            }
         }
 
-        public LinkListNode<T> Get(int index)
+        private LinkListNode<T> Get(int index)
         {
-            // 判断index是否在当前范围内，不在范围内直接返回null
+            // 判断index是否在当前范围内
             if (index < 0 || index > Length - 1)
             {
-                return null;
+                throw new ArgumentOutOfRangeException();
             }
-
+                
             // 从头结点开始遍历，记录当前遍历的index
             // 直到找到对应index的结点，返回结点
             // 找不到就返回null
@@ -118,51 +90,52 @@ namespace LearnAlgorithm.DataStructures.LinearList
         }
 
         /// <summary>
-        /// 后插
+        /// 追加一个元素
         /// </summary>
-        /// <param name="index"></param>
         /// <param name="data"></param>
-        public void InsertAfter(int index, T data)
+        public void Add(T data)
         {
-            // 判断index是否在当前范围内，不在范围内直接返回
-            if (index < 0 || index > Length - 1)
-            {
-                return;
-            }
+            var newNode = new LinkListNode<T>(data);
             
-            var currentNode = Get(index);
-            if (currentNode == null)
+            // Length为0，代表当前链表是空的
+            // 直接把新节点放入头节点
+            if (Length == 0)
             {
+                Head = newNode;
+                Length++;
                 return;
             }
 
-            var newNode = new LinkListNode<T>(data, currentNode.Next);
-            currentNode.Next = newNode;
-
+            // 找到最后一个节点，将新节点放入Next指针下
+            this.Last.Next = newNode;
             Length++;
         }
-
+        
         /// <summary>
-        /// 前插
+        /// 插入
         /// </summary>
         /// <param name="index"></param>
-        /// <param name="data"></param>
-        public void InsertBefore(int index, T data)
+        /// <param name="item"></param>
+        public void Insert(int index, T item)
         {
-            // 判断index是否在当前范围内，不在范围内直接返回
+            // index溢出
             if (index < 0 || index > Length - 1)
             {
                 return;
             }
             
+            // index为0，代表要插入头部
+            // 将新节点的Next指针指向当前头节点
+            // 并将新节点直接作为头节点
             if (index == 0)
             {
-                var newHead = new LinkListNode<T>(data, Head);
+                var newHead = new LinkListNode<T>(item, Head);
                 Head = newHead;
                 Length++;
                 return;
             }
             
+            // 找到前继节点
             int prevIndex = index - 1;
             var prevNode = Get(prevIndex);
             if (prevNode == null)
@@ -170,7 +143,10 @@ namespace LearnAlgorithm.DataStructures.LinearList
                 return;
             }
 
-            var newNode = new LinkListNode<T>(data, prevNode.Next);
+            // 找到指定index对应的节点(前继节点的Next指针指向的节点)
+            // 将新节点的Next指针指向index对应节点的Next指针指向的节点
+            // 前继节点的Next指针指向新节点，完成新节点的插入操作
+            var newNode = new LinkListNode<T>(item, prevNode.Next);
             prevNode.Next = newNode;
             Length++;
         }
@@ -179,13 +155,16 @@ namespace LearnAlgorithm.DataStructures.LinearList
         /// 删除
         /// </summary>
         /// <param name="index"></param>
-        public void Remove(int index)
+        public void RemoveAt(int index)
         {
+            // index溢出
             if (index < 0 || index > Length - 0)
             {
                 return;
             }
 
+            // index为0，代表要插入首部
+            // 将头节点的Next指针指向的节点作为新的头节点
             if (index == 0)
             {
                 Head = Head.Next;
@@ -193,6 +172,7 @@ namespace LearnAlgorithm.DataStructures.LinearList
                 return;
             }
 
+            // 找到前继节点
             var prevIndex = index - 1;
             var prevNode = Get(prevIndex);
             if (prevNode == null)
@@ -200,6 +180,7 @@ namespace LearnAlgorithm.DataStructures.LinearList
                 return;
             }
 
+            // 将前继节点的Next指针指向index所对应节点的Next指针指向的节点
             prevNode.Next = prevNode.Next.Next;
             Length--;
         }
