@@ -48,7 +48,6 @@ namespace LearnAlgorithm.DataStructures.LinearList
         /// 出栈
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public T Pop()
         {
             // 栈空溢出
