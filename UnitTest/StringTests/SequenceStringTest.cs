@@ -42,6 +42,11 @@ namespace LearnAlgorithm.UnitTest.StringTests
             Assert.Equal(0, str.IndexOf(new SequenceString(new []{'h', 'e'})));
             Assert.Equal(2, str.IndexOf(new SequenceString(new []{'l', 'l'})));
             Assert.Equal(-1, str.IndexOf(new SequenceString(new []{'w', 'o'})));
+            
+            Assert.Equal(0, str.BfIndexOf(new SequenceString(new []{'h'})));
+            Assert.Equal(0, str.BfIndexOf(new SequenceString(new []{'h', 'e'})));
+            Assert.Equal(2, str.BfIndexOf(new SequenceString(new []{'l', 'l'})));
+            Assert.Equal(-1, str.BfIndexOf(new SequenceString(new []{'w', 'o'})));
         }
     }
 }

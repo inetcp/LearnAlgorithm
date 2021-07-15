@@ -227,13 +227,13 @@ namespace LearnAlgorithm.DataStructures.String
                 return -1;
             }
 
-            // 主串和子串长度差
+            // 主串和待匹配串长度差
             int i = 0;
             int diff = Length - inputLength;
             while (i < diff)
             {
                 // 从主串的指定索引处截取与字串一样长度的字符
-                // 与子串进行比较，如果匹配，则当前i的值就是子串在主串中的对应位置
+                // 与待匹配串进行比较，如果匹配，则当前i的值就是待匹配串在主串中的对应位置
                 SequenceString tmpStr = SubString(i, inputLength);
                 if (str.Compare(tmpStr) == 0)
                 {
@@ -244,6 +244,44 @@ namespace LearnAlgorithm.DataStructures.String
             }
 
             // 如果没找到，就返回-1
+            return -1;
+        }
+
+        /// <summary>
+        /// IndexOf的Brute Force 算法
+        /// </summary>
+        /// <param name="str">待匹配串</param>
+        /// <returns></returns>
+        public int BfIndexOf(SequenceString str)
+        {
+            int inputLength = str.Length;
+            
+            // 待匹配的字符串大于当前字符串长度，返回-1
+            if (inputLength > Length)
+            {
+                return -1;
+            }
+
+            // 主串长度与待匹配串的差值，就是待匹配串要移动的次数
+            int moveLength = Length - inputLength;
+            for (int pos = 0; pos < moveLength + 1; pos++)
+            {
+                // 从主串第一个值一一比较主串(pos + j)与待匹配串(j)相同位置的值
+                // 如果相同，则继续待匹配串下一位的比较
+                // 如果不相同，则待匹配串向后“挪动”一位，继续与主串进行比对
+                int matchCount = 0;
+                while (matchCount < inputLength && this[pos + matchCount] == str[matchCount])
+                {
+                    matchCount++;
+                }
+
+                // 如果已匹配的数量与子串的长度相同，说明当前位置就是已匹配到的位置
+                if (matchCount == inputLength)
+                {
+                    return pos;
+                }
+            }
+
             return -1;
         }
     }
