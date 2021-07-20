@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LearnAlgorithm.DataStructures.LinearList
+namespace LearnAlgorithm.DataStructures.LinearList.Stack
 {
     /// <summary>
     /// 两栈共享空间

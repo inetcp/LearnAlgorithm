@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LearnAlgorithm.DataStructures.LinearList
+namespace LearnAlgorithm.DataStructures.LinearList.List
 {
     /// <summary>
     /// 线性表

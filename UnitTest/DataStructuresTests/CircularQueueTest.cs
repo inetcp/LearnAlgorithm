@@ -1,4 +1,5 @@
 ﻿using LearnAlgorithm.DataStructures.LinearList;
+using LearnAlgorithm.DataStructures.LinearList.Queue;
 using Xunit;
 
 namespace LearnAlgorithm.UnitTest.DataStructuresTests

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LearnAlgorithm.DataStructures.LinearList
+namespace LearnAlgorithm.DataStructures.LinearList.Link
 {
     /// <summary>
     /// 循环单链表

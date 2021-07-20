@@ -1,4 +1,6 @@
-﻿namespace LearnAlgorithm.DataStructures.LinearList
+﻿using LearnAlgorithm.DataStructures.LinearList.Link;
+
+namespace LearnAlgorithm.DataStructures.LinearList.Stack
 {
     /// <summary>
     /// 栈(链表版)

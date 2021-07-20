@@ -1,4 +1,4 @@
-﻿namespace LearnAlgorithm.DataStructures.LinearList
+﻿namespace LearnAlgorithm.DataStructures.LinearList.Link
 {
     /// <summary>
     /// 链表结点

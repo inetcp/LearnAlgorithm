@@ -1,4 +1,6 @@
-﻿namespace LearnAlgorithm.DataStructures.LinearList
+﻿using LearnAlgorithm.DataStructures.LinearList.Link;
+
+namespace LearnAlgorithm.DataStructures.LinearList.Queue
 {
     /// <summary>
     /// 队列(链表版)
