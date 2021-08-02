@@ -4,11 +4,11 @@ using Xunit.Abstractions;
 
 namespace LearnAlgorithm.UnitTest.DataStructuresTests
 {
-    public class PTreeTest
+    public class CTreeTest
     {
         private readonly ITestOutputHelper _testOutputHelper;
         
-        public PTreeTest(ITestOutputHelper testOutputHelper)
+        public CTreeTest(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
         }
@@ -16,7 +16,7 @@ namespace LearnAlgorithm.UnitTest.DataStructuresTests
         [Fact]
         public void Test()
         {
-            PTree<int> tree = new PTree<int>(1, 10);
+            CTree<int> tree = new CTree<int>(1, 10);
             
             var parent2 = tree.AddNode(2, tree.Root);
             var parent3 = tree.AddNode(3, tree.Root);

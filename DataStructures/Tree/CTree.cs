@@ -7,28 +7,29 @@ namespace LearnAlgorithm.DataStructures.Tree
     /// 树节点
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PTreeNode<T>
+    public class CTreeNode<T>
     {
         /// <summary>
         /// 数据域
         /// </summary>
         public T Data { get; set; }
-        
+
         /// <summary>
-        /// 双亲节点index
+        /// 双亲节点Index
         /// </summary>
         public int ParentIndex { get; set; }
 
-        public PTreeNode()
-        {
-        }
+        /// <summary>
+        /// 孩子节点指针域
+        /// </summary>
+        public CTreeChildNode FirstChild { get; set; }
 
-        public PTreeNode(T data, int parentIndex)
+        public CTreeNode(T data, int parentIndex)
         {
             Data = data;
             ParentIndex = parentIndex;
         }
-
+        
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -37,7 +38,7 @@ namespace LearnAlgorithm.DataStructures.Tree
             if (this == obj)
                 return true;
 
-            var objNode = (PTreeNode<T>) obj;
+            var objNode = (CTreeNode<T>) obj;
             if (this.Data.Equals(objNode.Data) && this.ParentIndex == objNode.ParentIndex)
             {
                 return true;
@@ -45,45 +46,83 @@ namespace LearnAlgorithm.DataStructures.Tree
             
             return false;
         }
+
+        public void AddChildNode(int index)
+        {
+            if (FirstChild == null)
+            {
+                FirstChild = new CTreeChildNode(index);
+            }
+            else
+            {
+                var lastNode = FirstChild;
+                while (lastNode.Next != null)
+                {
+                    lastNode = lastNode.Next;
+                }
+
+                lastNode.Next = new CTreeChildNode(index);
+            }
+        }
     }
 
     /// <summary>
-    /// 树（双亲表示法）
+    /// 孩子链表节点
     /// </summary>
-    public class PTree<T>
+    public class CTreeChildNode
+    {
+        /// <summary>
+        /// 孩子节点Index 
+        /// </summary>
+        public int ChildIndex { get; set; }
+
+        /// <summary>
+        /// 下一个孩子节点
+        /// </summary>
+        public CTreeChildNode Next { get; set; }
+
+        public CTreeChildNode()
+        {
+        }
+
+        public CTreeChildNode(int childIndex)
+        {
+            this.ChildIndex = childIndex;
+        }
+    }
+
+    /// <summary>
+    /// 树（孩子表示法）
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class CTree<T>
     {
         private readonly int _treeSize = 100;
-        private PTreeNode<T>[] _datas;
+        private CTreeNode<T>[] _datas;
 
-        public PTree(T rootData)
+        public CTree(T rootData)
         {
-            _datas = new PTreeNode<T>[_treeSize];
-            _datas[0] = new PTreeNode<T>(rootData, -1);
+            _datas = new CTreeNode<T>[_treeSize];
+            _datas[0] = new CTreeNode<T>(rootData, -1);
             Count++;
         }
 
-        public PTree(T rootData, int treeSize)
+        public CTree(T rootData, int treeSize)
         {
             _treeSize = treeSize;
-            _datas = new PTreeNode<T>[_treeSize];
-            _datas[0] = new PTreeNode<T>(rootData, -1);
+            _datas = new CTreeNode<T>[_treeSize];
+            _datas[0] = new CTreeNode<T>(rootData, -1);
             Count++;
         }
 
         public int Count { get; private set; }
-
+        
         /// <summary>
         /// 根节点
         /// </summary>
-        public PTreeNode<T> Root => Count == 0 ? null : _datas[0];
+        public CTreeNode<T> Root => Count == 0 ? null : _datas[0];
 
-        /// <summary>
-        /// 添加节点
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="parentNode"></param>
-        /// <exception cref="Exception"></exception>
-        public PTreeNode<T> AddNode(T data, PTreeNode<T> parentNode)
+        public CTreeNode<T> AddNode(T data, CTreeNode<T> parentNode)
         {
             // 超出容量
             if (Count > _treeSize)
@@ -97,14 +136,15 @@ namespace LearnAlgorithm.DataStructures.Tree
                 throw new Exception("无效的父节点");
             }
 
-            PTreeNode<T> result = null;
+            CTreeNode<T> result = null;
 
             for (int i = 0; i < _treeSize; i++)
             {
                 if (_datas[i] == null)
                 {
-                    result = new PTreeNode<T>(data, parentIndex);
+                    result = new CTreeNode<T>(data, parentIndex);
                     _datas[i] = result;
+                    parentNode.AddChildNode(i);
                     Count++;
                     break;
                 }
@@ -112,13 +152,13 @@ namespace LearnAlgorithm.DataStructures.Tree
 
             return result;
         }
-
+        
         /// <summary>
         /// 获取指定节点的父节点
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public PTreeNode<T> GetParent(PTreeNode<T> node)
+        public CTreeNode<T> GetParent(CTreeNode<T> node)
         {
             if (node == null)
                 return null;
@@ -131,7 +171,7 @@ namespace LearnAlgorithm.DataStructures.Tree
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public int GetNodeIndex(PTreeNode<T> node)
+        public int GetNodeIndex(CTreeNode<T> node)
         {
             for (int i = 0; i < _treeSize; i++)
             {
@@ -149,29 +189,26 @@ namespace LearnAlgorithm.DataStructures.Tree
         /// </summary>
         /// <param name="parentNode"></param>
         /// <returns></returns>
-        public List<PTreeNode<T>> GetChilds(PTreeNode<T> parentNode = null)
+        public List<CTreeNode<T>> GetChilds(CTreeNode<T> parentNode = null)
         {
-            var list = new List<PTreeNode<T>>();
-            
-            var parentIndex = GetNodeIndex(parentNode);
-            for (int i = 0; i < _treeSize; i++)
+            var list = new List<CTreeNode<T>>();
+            if (parentNode == null)
             {
-                var currentNode = _datas[i];
-                if (currentNode == null)
+                for (int i = 0; i < _treeSize; i++)
                 {
-                    continue;
-                }
-
-                if (parentNode == null)
-                {
-                    list.Add(currentNode);
-                }
-                else
-                {
-                    if (currentNode.ParentIndex == parentIndex)
+                    if (_datas[i] != null)
                     {
-                        list.Add(currentNode);
+                        list.Add(_datas[i]);
                     }
+                }
+            }
+            else
+            {
+                var currentNode = parentNode.FirstChild;
+                while (currentNode != null)
+                {
+                    list.Add(_datas[currentNode.ChildIndex]);
+                    currentNode = currentNode.Next;
                 }
             }
 
